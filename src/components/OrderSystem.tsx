@@ -85,7 +85,7 @@ export function OrderSystem({ cartItems, onUpdateCart, selectedTable }: OrderSys
     return cartItems.reduce((total, item) => {
       const basePrice = item.price;
       const sizeUpcharge = customizationOptions.sizes.find(s => s.name === item.size)?.price || 0;
-      const extrasPrice = item.customizations.reduce((sum, extra) => {
+      const extrasPrice = (item.customizations || []).reduce((sum, extra) => {
         const extraOption = customizationOptions.extras.find(e => e.name === extra);
         return sum + (extraOption?.price || 0);
       }, 0);
@@ -269,7 +269,7 @@ export function OrderSystem({ cartItems, onUpdateCart, selectedTable }: OrderSys
                 <p className="text-sm text-muted-foreground">
                   {item.size} • {item.milk} • {item.temperature}
                 </p>
-                {item.customizations.length > 0 && (
+                {item.customizations && item.customizations.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-1">
                     {item.customizations.map((custom) => (
                       <Badge key={custom} variant="outline" className="text-xs">

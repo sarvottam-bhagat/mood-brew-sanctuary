@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Hero } from "@/components/Hero";
 import { MoodSelector } from "@/components/MoodSelector";
 import { CoffeeMenu } from "@/components/CoffeeMenu";
@@ -27,6 +28,7 @@ import {
 } from "lucide-react";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [currentSection, setCurrentSection] = useState<'hero' | 'experience'>('hero');
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<any[]>([]);
@@ -60,6 +62,14 @@ const Index = () => {
     });
   };
 
+  const handleGoHome = () => {
+    setCurrentSection('hero');
+    setSelectedMood(null);
+    setCartItems([]);
+    setSelectedTable(null);
+    navigate('/');
+  };
+
   if (currentSection === 'hero') {
     return (
       <div className="min-h-screen bg-background">
@@ -75,7 +85,10 @@ const Index = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-display font-bold text-primary">
+              <h1 
+                className="text-2xl font-display font-bold text-primary cursor-pointer hover:opacity-80 transition-opacity" 
+                onClick={handleGoHome}
+              >
                 Aura Coffee
               </h1>
               {selectedMood && (

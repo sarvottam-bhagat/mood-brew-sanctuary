@@ -4,6 +4,10 @@ import { MoodSelector } from "@/components/MoodSelector";
 import { CoffeeMenu } from "@/components/CoffeeMenu";
 import { MoodRooms } from "@/components/MoodRooms";
 import { LoyaltyProgram } from "@/components/LoyaltyProgram";
+import { OrderSystem } from "@/components/OrderSystem";
+import { SmartTableService } from "@/components/SmartTableService";
+import { AIFlavorRecommender } from "@/components/AIFlavorRecommender";
+import { ARMenu } from "@/components/ARMenu";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +30,7 @@ const Index = () => {
   const [currentSection, setCurrentSection] = useState<'hero' | 'experience'>('hero');
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<any[]>([]);
+  const [selectedTable, setSelectedTable] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleGetStarted = () => {
@@ -103,7 +108,7 @@ const Index = () => {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-12">
         <Tabs defaultValue="mood" className="space-y-12">
-          <TabsList className="grid w-full grid-cols-4 bg-muted/50 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-7 bg-muted/50 backdrop-blur-sm">
             <TabsTrigger value="mood" className="flex items-center space-x-2">
               <Brain className="h-4 w-4" />
               <span>Mood</span>
@@ -112,9 +117,21 @@ const Index = () => {
               <Coffee className="h-4 w-4" />
               <span>Coffee</span>
             </TabsTrigger>
-            <TabsTrigger value="spaces" className="flex items-center space-x-2">
+            <TabsTrigger value="ai-flavor" className="flex items-center space-x-2">
+              <Sparkles className="h-4 w-4" />
+              <span>AI Flavor</span>
+            </TabsTrigger>
+            <TabsTrigger value="ar-menu" className="flex items-center space-x-2">
+              <Calendar className="h-4 w-4" />
+              <span>AR Menu</span>
+            </TabsTrigger>
+            <TabsTrigger value="table" className="flex items-center space-x-2">
               <MapPin className="h-4 w-4" />
-              <span>Spaces</span>
+              <span>Smart Table</span>
+            </TabsTrigger>
+            <TabsTrigger value="order" className="flex items-center space-x-2">
+              <ShoppingCart className="h-4 w-4" />
+              <span>Order</span>
             </TabsTrigger>
             <TabsTrigger value="rewards" className="flex items-center space-x-2">
               <Star className="h-4 w-4" />
@@ -123,24 +140,27 @@ const Index = () => {
           </TabsList>
 
           <TabsContent value="mood" className="space-y-12">
-            <MoodSelector 
-              selectedMood={selectedMood}
-              onMoodSelect={handleMoodSelect}
-            />
+            <MoodSelector selectedMood={selectedMood} onMoodSelect={handleMoodSelect} />
           </TabsContent>
 
           <TabsContent value="coffee" className="space-y-12">
-            <CoffeeMenu 
-              selectedMood={selectedMood}
-              onAddToCart={handleAddToCart}
-            />
+            <CoffeeMenu selectedMood={selectedMood} onAddToCart={handleAddToCart} />
           </TabsContent>
 
-          <TabsContent value="spaces" className="space-y-12">
-            <MoodRooms 
-              selectedMood={selectedMood}
-              onRoomSelect={handleRoomSelect}
-            />
+          <TabsContent value="ai-flavor" className="space-y-12">
+            <AIFlavorRecommender selectedMood={selectedMood} onCoffeeSelect={handleAddToCart} />
+          </TabsContent>
+
+          <TabsContent value="ar-menu" className="space-y-12">
+            <ARMenu />
+          </TabsContent>
+
+          <TabsContent value="table" className="space-y-12">
+            <SmartTableService selectedTable={selectedTable} onTableSelect={(table) => setSelectedTable(table.number)} />
+          </TabsContent>
+
+          <TabsContent value="order" className="space-y-12">
+            <OrderSystem cartItems={cartItems} onUpdateCart={setCartItems} selectedTable={selectedTable} />
           </TabsContent>
 
           <TabsContent value="rewards" className="space-y-12">
